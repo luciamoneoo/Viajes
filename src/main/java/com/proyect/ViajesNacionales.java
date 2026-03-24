@@ -2,8 +2,8 @@ package com.proyect;
 
 public class ViajesNacionales extends Viajes {
 
-    public ViajesNacionales(String destino, double precio, int dias, String transporte, String alojamiento) {
-        super(destino, precio, dias, transporte, alojamiento);
+    public ViajesNacionales(String nombre, int nPersonas, String destino, double precio, int dias, String transporte, String alojamiento) {
+        super(nombre, nPersonas, destino, precio, dias, transporte, alojamiento);
     }
 
     @Override
