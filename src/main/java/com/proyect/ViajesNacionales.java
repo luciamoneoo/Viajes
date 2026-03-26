@@ -7,12 +7,13 @@ public class ViajesNacionales extends Viajes {
     }
 
     @Override
-    public double calcularPrecio() {
-        return precio;
+        public double calcularPrecio() {
+            return precio;
     }
 
     @Override
-    public String resumenViaje() {
-        return "Viaje a " + destino + " durante " + dias + " días.";
+        public String resumenViaje() {
+            return "Viaje a " + destino + " durante " + dias + " días.";
     }
-}
+
+}   
