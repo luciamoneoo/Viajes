@@ -1,15 +1,17 @@
 package com.proyect;
 
-import java.util.Scanner;
+
 
 public class App {
-
     public static void main(String[] args) {
-        AdminViajes admin = new AdminViajes();
-
-        GestionViajes consola = new GestionViajes(admin);
+        // 1. Instanciamos la lógica (colecciones)
+        GestorViajes gestor = new GestorViajes();
+        
+        // 2. Instanciamos la consola pasándole el gestor
+        GestionViajes consola = new GestionViajes(gestor);
+        
+        // 3. Arrancamos el menú interactivo
+        consola.iniciar();
     }
-
-       
 }
   
