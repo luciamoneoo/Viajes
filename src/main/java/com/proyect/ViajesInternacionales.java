@@ -8,7 +8,7 @@ public class ViajesInternacionales extends Viajes {
 
     @Override
     public double calcularPrecio() {
-        return precio + 200; // tasas internacionales
+        return precio + 200; // ponemos por ejemplo 200 euros por los visados  eso
     }
 
     @Override
