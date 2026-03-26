@@ -8,6 +8,7 @@ public class App {
         AdminViajes admin = new AdminViajes();
 
         GestionViajes consola = new GestionViajes(admin);
+    
     }
 
        
