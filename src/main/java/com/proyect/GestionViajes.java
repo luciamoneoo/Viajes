@@ -1,7 +1,5 @@
 package com.proyect;
 
-
-
 import java.util.Scanner;
 
 public class GestionViajes {
@@ -29,61 +27,54 @@ public class GestionViajes {
     }
 
     private void mostrarMenu() {
-        System.out.println("\n╔══════════════════════════╗");
-        System.out.println("║       T R A V E L L O G  ║");
-        System.out.println("╠══════════════════════════╣");
-        System.out.println("║  1. Ver todos los viajes ║");
-        System.out.println("║  2. Añadir un viaje      ║");
-        System.out.println("║  3. Eliminar un viaje    ║");
-        System.out.println("║  0. Salir                ║");
-        System.out.println("╚══════════════════════════╝");
+       
+        System.out.println("1. Ver todos los viajes");
+        System.out.println("2. Añadir un viaje");
+        System.out.println("3. Eliminar un viaje");
+        System.out.println("0. Salir");
     }
 
     private void mostrarInventario() {
         if (gestor.getListaViajes().isEmpty()) {
-            System.out.println("No hay viajes registrados actualmente.");
+            System.out.println("No hay viajes registrados");
             return;
         }
         
-        // Uso de printf para tabular la salida (Requisito RA5)
         System.out.printf("%n%-8s %-15s %-15s %-10s %10s%n", 
             "ID", "TIPO", "DESTINO", "DÍAS", "PRECIO");
-        System.out.println("─".repeat(62));
+        System.out.println("─".repeat(50));
         
         for (Viajes v : gestor.getListaViajes()) {
-            System.out.printf("%-8s %s%n", v.getId(), v.resumenViaje());
+            System.out.printf("%-15s %s%n", v.getId(), v.resumenViaje());
         }
-        System.out.println("─".repeat(62));
+        System.out.println("─".repeat(50));
     }
 
     private void crearViaje() {
-        System.out.println("\n--- CREAR NUEVO VIAJE ---");
-        
-        // Uso de Regex para validar texto (Requisito RA6)
-        String nombre = leerTextoRegex("Nombre del viaje (solo letras): ", "^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}$");
-        String destino = leerTextoRegex("Destino (solo letras): ", "^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,30}$");
-        int nPersonas = leerEntero("Número de personas (1-50): ", 1, 50);
-        double precioBase = leerDouble("Precio base por persona (€): ", 0.0, 10000.0);
-        int dias = leerEntero("Duración en días (1-365): ", 1, 365);
-        
-        // Actividades (Array simple para cumplir RA6)
-        System.out.print("Introduce una actividad principal: ");
-        String[] actividades = new String[]{ sc.nextLine().trim() };
+    System.out.println(" CREAR NUEVO VIAJE ");
 
-        int tipo = leerEntero("¿Es Nacional (1) o Internacional (2)? ", 1, 2);
+    String nombre = leerTextoRegex("Nombre del viaje: ", "^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}$");
+    String destino = leerTextoRegex("Destino: ", "^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,30}$");
+    int nPersonas = leerEntero("Número de personas: ", 1, 50);
+    double precioBase = leerDouble("Precio base (€): ", 0.0, 10000.0);
+    int dias = leerEntero("Días: ", 1, 365);
 
-        if (tipo == 1) {
-            String comunidad = leerTextoRegex("Comunidad Autónoma: ", "^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,30}$");
-            ViajesNacionales vn = new ViajesNacionales(nombre, nPersonas, destino, precioBase, dias, actividades, comunidad);
-            gestor.aniadirViaje(vn);
-            System.out.println("¡Viaje nacional añadido con éxito!");
-        } else {
-            int visado = leerEntero("¿Requiere visado? (1 = Sí, 2 = No): ", 1, 2);
-            ViajesInternacionales vi = new ViajesInternacionales(nombre, nPersonas, destino, precioBase, dias, actividades, visado == 1);
-            gestor.aniadirViaje(vi);
-            System.out.println("¡Viaje internacional añadido con éxito!");
-        }
+    String transporte = leerTextoRegex("Transporte: ", ".*");
+    String alojamiento = leerTextoRegex("Alojamiento: ", ".*");
+
+    int tipo = leerEntero("¿Nacional (1) o Internacional (2)? ", 1, 2);
+
+    Viajes viaje;
+
+    if (tipo == 1) {
+        viaje = new ViajesNacionales(nombre, nPersonas, destino, precioBase, dias, transporte, alojamiento);
+    } else {
+        viaje = new ViajesInternacionales(nombre, nPersonas, destino, precioBase, dias, transporte, alojamiento);
     }
+
+    gestor.añadirViaje(viaje);
+    System.out.println("¡Viaje añadido correctamente!");
+}
 
     private void borrarViaje() {
         System.out.print("\nIntroduce el ID del viaje a eliminar: ");
@@ -95,8 +86,6 @@ public class GestionViajes {
             System.out.println("Error: No se ha encontrado ningún viaje con el ID " + id);
         }
     }
-
-    // --- MÉTODOS AUXILIARES DE VALIDACIÓN ---
 
     private String leerTextoRegex(String prompt, String regex) {
         String input;
@@ -125,7 +114,7 @@ public class GestionViajes {
             } else {
                 System.out.println("  -> Por favor, introduce un número válido.");
             }
-            sc.nextLine(); // Limpiar el buffer
+            sc.nextLine(); 
         } while (!valido);
         return valor;
     }
@@ -145,7 +134,7 @@ public class GestionViajes {
             } else {
                 System.out.println("  -> Por favor, introduce un importe válido (usa coma para decimales).");
             }
-            sc.nextLine(); // Limpiar buffer
+            sc.nextLine(); 
         } while (!valido);
         return valor;
     }

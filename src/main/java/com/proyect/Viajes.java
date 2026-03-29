@@ -23,4 +23,24 @@ public abstract class Viajes {
 
     public abstract String resumenViaje();
     
+    public String getId() {
+    return nombre; 
+    }
+
+    public String getNombre() {
+    return nombre; 
+    }
+
+    public String getDestino() {
+    return destino; 
+    }
+
+    public double getPrecio() {
+    return precio; 
+    }
+
+    public int getDias() {
+    return dias; 
+    }
+
 }
