@@ -1,7 +1,10 @@
 package com.proyect;
 public abstract class Viajes {
 
+    private static int contadorId = 1;
+
     protected String nombre;
+    protected String Id;
     protected int nPersonas;
     protected String destino;
     protected double precio;
@@ -17,6 +20,17 @@ public abstract class Viajes {
         this.dias = dias;
         this.transporte = transporte;
         this.alojamiento = alojamiento;
+        String numero = "";
+    if (contadorId < 10) {
+    numero = "00" + contadorId;
+    } else if (contadorId < 100) {
+    numero = "0" + contadorId;
+    } else 
+        {
+    numero = "" + contadorId;
+    }
+    this.Id = "V" + numero;
+        contadorId++;
     }
 
     public abstract double calcularPrecio();
@@ -24,7 +38,7 @@ public abstract class Viajes {
     public abstract String resumenViaje();
     
     public String getId() {
-    return nombre; 
+    return Id; 
     }
 
     public String getNombre() {
