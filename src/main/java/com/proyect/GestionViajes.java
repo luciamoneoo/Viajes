@@ -4,138 +4,127 @@ import java.util.Scanner;
 
 public class GestionViajes {
 
-    private final GestorViajes gestor;
-    private final Scanner sc = new Scanner(System.in);
+    private GestorViajes gestor;
+    private Scanner sc = new Scanner(System.in);
 
-    // Le pasamos el gestor por constructor para que trabaje sobre la misma lista
     public GestionViajes(GestorViajes gestor) {
         this.gestor = gestor;
+        
     }
 
     public void iniciar() {
-        int opcion;
-        do {
-            mostrarMenu();
-            opcion = leerEntero("Opción: ", 0, 3);
-            switch (opcion) {
-                case 1 -> mostrarInventario();
-                case 2 -> crearViaje();
-                case 3 -> borrarViaje();
-                case 0 -> System.out.println("Guardando y cerrando el sistema...");
+        int opcion = -1;
+        while (opcion != 0) {
+            System.out.println(" AGENCIA DE VIAJES ");
+            System.out.println("1. Ver mis viajes");
+            System.out.println("2. Añadir viaje");
+            System.out.println("3. Eliminar viaje");
+            System.out.println("0. Salir");
+
+            try {
+                opcion = Integer.parseInt(sc.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Tienes que poner un numero");
+                continue;
             }
-        } while (opcion != 0);
+
+            if (opcion == 1) {
+                mostrarViajes();
+            } else if (opcion == 2) {
+                añadirViaje();
+            } else if (opcion == 3) {
+                eliminarViaje();
+            } else if (opcion != 0) {
+                System.out.println("No existe esa opcion");
+            }
+        }
+        System.out.println("Chao pescao");
     }
 
-    private void mostrarMenu() {
-       
-        System.out.println("1. Ver todos los viajes");
-        System.out.println("2. Añadir un viaje");
-        System.out.println("3. Eliminar un viaje");
-        System.out.println("0. Salir");
-    }
-
-    private void mostrarInventario() {
+    private void mostrarViajes() {
         if (gestor.getListaViajes().isEmpty()) {
-            System.out.println("No hay viajes registrados");
+            System.out.println("No hay ningún viaje todavía");
             return;
         }
-        
-        System.out.printf("%n%-8s %-15s %-15s %-10s %10s%n", 
-            "ID", "TIPO", "DESTINO", "DÍAS", "PRECIO");
-        System.out.println("─".repeat(50));
-        
+        System.out.printf("%-6s %-20s %-15s %8s%n", "ID", "NOMBRE", "DESTINO", "PRECIO");
         for (Viajes v : gestor.getListaViajes()) {
-            System.out.printf("%-15s %s%n", v.getId(), v.resumenViaje());
+            System.out.printf("%-6s %-20s %-15s %7.2feur%n",
+                v.getId(), v.getNombre(), v.getDestino(), v.calcularPrecio());
         }
-        System.out.println("─".repeat(50));
     }
 
-    private void crearViaje() {
-    System.out.println(" CREAR NUEVO VIAJE ");
+    private void añadirViaje() {
+        System.out.println("Nuevo viaje");
 
-    String nombre = leerTextoRegex("Nombre del viaje: ", "^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}$");
-    String destino = leerTextoRegex("Destino: ", "^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,30}$");
-    int nPersonas = leerEntero("Número de personas: ", 1, 50);
-    double precioBase = leerDouble("Precio base (€): ", 0.0, 10000.0);
-    int dias = leerEntero("Días: ", 1, 365);
+        String nombre = pedirTexto("Nombre: ", "^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}$");
+        String destino = pedirTexto("Destino: ", "^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,30}$");
 
-    String transporte = leerTextoRegex("Transporte: ", ".*");
-    String alojamiento = leerTextoRegex("Alojamiento: ", ".*");
+        int personas = pedirEntero("Nº personas (1-50): ", 1, 50);
+        double precio = pedirDecimal("Precio base : ", 0, 10000 );
+        int dias = pedirEntero("Días de viaje: ", 1, 365);
 
-    int tipo = leerEntero("¿Nacional (1) o Internacional (2)? ", 1, 2);
+        String transporte = pedirTexto("Transporte (avion, tren, bus...): ", ".+");
+        String alojamiento = pedirTexto("Alojamiento (hotel, hostal...): ", ".+");
 
-    Viajes viaje;
+        System.out.print("Si es nacional pulse 1, si es internacional pulse 2 ");
+        int tipo = pedirEntero("", 1, 2);
 
-    if (tipo == 1) {
-        viaje = new ViajesNacionales(nombre, nPersonas, destino, precioBase, dias, transporte, alojamiento);
-    } else {
-        viaje = new ViajesInternacionales(nombre, nPersonas, destino, precioBase, dias, transporte, alojamiento);
-    }
-
-    gestor.añadirViaje(viaje);
-    System.out.println("¡Viaje añadido correctamente!");
-}
-
-    private void borrarViaje() {
-        System.out.print("\nIntroduce el ID del viaje a eliminar: ");
-        String id = sc.nextLine().trim();
-        
-        if (gestor.eliminarViaje(id)) {
-            System.out.println("Viaje eliminado correctamente de los registros.");
+        Viajes v;
+        if (tipo == 1) {
+            v = new ViajesNacionales(nombre, personas, destino, precio, dias, transporte, alojamiento);
         } else {
-            System.out.println("Error: No se ha encontrado ningún viaje con el ID " + id);
+            v = new ViajesInternacionales(nombre, personas, destino, precio, dias, transporte, alojamiento);
+        }
+
+        gestor.añadirViaje(v);
+        System.out.println("ID de tu viaje : " + v.getId());
+    }
+
+    private void eliminarViaje() {
+        System.out.print("ID de tu viaje eliminado: ");
+        String id = sc.nextLine().trim();
+
+        boolean ok = gestor.eliminarViaje(id);
+        if (ok) {
+            System.out.println("Viaje eliminado");
+        } else {
+            System.out.println("Ningun viaje contiene ese ID");
         }
     }
 
-    private String leerTextoRegex(String prompt, String regex) {
-        String input;
-        do {
-            System.out.print(prompt);
+    private String pedirTexto(String prompt, String regex) {
+        String input = "";
+        while (!input.matches(regex)) {
+            if (!prompt.isEmpty()) System.out.print(prompt);
             input = sc.nextLine().trim();
-            if (!input.matches(regex)) {
-                System.out.println("  -> Formato incorrecto. Por favor, revisa el texto.");
-            }
-        } while (!input.matches(regex));
+            if (!input.matches(regex)) System.out.println("Formato incorrecto");
+        }
         return input;
     }
 
-    private int leerEntero(String prompt, int min, int max) {
-        int valor = -1;
-        boolean valido = false;
-        do {
-            System.out.print(prompt);
-            if (sc.hasNextInt()) {
-                valor = sc.nextInt();
-                if (valor >= min && valor <= max) {
-                    valido = true;
-                } else {
-                    System.out.println("  -> El número debe estar entre " + min + " y " + max + ".");
-                }
-            } else {
-                System.out.println("  -> Por favor, introduce un número válido.");
+    private int pedirEntero(String prompt, int min, int max) {
+        while (true) {
+            if (!prompt.isEmpty()) System.out.print(prompt);
+            try {
+                int n = Integer.parseInt(sc.nextLine().trim());
+                if (n >= min && n <= max) return n;
+                System.out.println(" Tiene que ser entre " + min + " y " + max );
+            } catch (NumberFormatException e) {
+                System.out.println(" Tiene que ser un numero");
             }
-            sc.nextLine(); 
-        } while (!valido);
-        return valor;
+        }
     }
 
-    private double leerDouble(String prompt, double min, double max) {
-        double valor = -1.0;
-        boolean valido = false;
-        do {
+    private double pedirDecimal(String prompt, double min, double max) {
+        while (true) {
             System.out.print(prompt);
-            if (sc.hasNextDouble()) {
-                valor = sc.nextDouble();
-                if (valor >= min && valor <= max) {
-                    valido = true;
-                } else {
-                    System.out.println("  -> El precio debe estar entre " + min + " y " + max + ".");
-                }
-            } else {
-                System.out.println("  -> Por favor, introduce un importe válido (usa coma para decimales).");
+            try {
+                double d = Double.parseDouble(sc.nextLine().trim().replace(",", "."));
+                if (d >= min && d <= max) return d;
+                System.out.println("  Tiene que ser entre " + min + " y " + max );
+            } catch (NumberFormatException e) {
+                System.out.println(" Ese numero es incorrecto");
             }
-            sc.nextLine(); 
-        } while (!valido);
-        return valor;
+        }
     }
 }
