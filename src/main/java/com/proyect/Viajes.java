@@ -49,6 +49,14 @@ public abstract class Viajes {
     return destino; 
     }
 
+    public String getTransporte() {
+    return transporte; 
+    }
+
+    public String getAlojamiento() {
+    return alojamiento; 
+    }
+
     public double getPrecio() {
     return precio; 
     }

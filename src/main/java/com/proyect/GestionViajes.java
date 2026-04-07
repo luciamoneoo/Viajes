@@ -46,10 +46,10 @@ public class GestionViajes {
             System.out.println("No hay ningún viaje todavía");
             return;
         }
-        System.out.printf("%-6s %-20s %-15s %8s%n", "ID", "NOMBRE", "DESTINO", "PRECIO");
+        System.out.printf("%-6s %-20s %-15s %-17s %-12s %-8s %8s%n", "ID", "NOMBRE", "DESTINO", "TRANSPORTE", "ALOJAMIENTO", "DÍAS", "PRECIO");
         for (Viajes v : gestor.getListaViajes()) {
-            System.out.printf("%-6s %-20s %-15s %7.2feur%n",
-                v.getId(), v.getNombre(), v.getDestino(), v.calcularPrecio());
+            System.out.printf("%-6s %-20s %-15s %-15s %-15s %-2s %7.2feur%n",
+                v.getId(), v.getNombre(), v.getDestino(), v.getTransporte(), v.getAlojamiento(), v.getDias(), v.calcularPrecio() );
         }
     }
 
