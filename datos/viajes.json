@@ -1,0 +1,50 @@
+[
+  {
+    "id": "V001",
+    "tipo": "Nacional",
+    "nombre": "Canarias",
+    "destino": "Canarias",
+    "personas": 30,
+    "precioBase": 500.0,
+    "precioFinal": 500.0,
+    "dias": 3,
+    "transporte": "avion",
+    "alojamiento": "hotel"
+  },
+  {
+    "id": "V002",
+    "tipo": "Nacional",
+    "nombre": "Paco",
+    "destino": "Toledo",
+    "personas": 2,
+    "precioBase": 100.0,
+    "precioFinal": 100.0,
+    "dias": 1,
+    "transporte": "bus",
+    "alojamiento": "apartamento"
+  },
+  {
+    "id": "V003",
+    "tipo": "Nacional",
+    "nombre": "carmen",
+    "destino": "lejos",
+    "personas": 1,
+    "precioBase": 23.0,
+    "precioFinal": 23.0,
+    "dias": 66,
+    "transporte": "gaviota",
+    "alojamiento": "tren"
+  },
+  {
+    "id": "V004",
+    "tipo": "Nacional",
+    "nombre": "dopamina",
+    "destino": "malasia",
+    "personas": 33,
+    "precioBase": 4000.0,
+    "precioFinal": 4000.0,
+    "dias": 65,
+    "transporte": "tren",
+    "alojamiento": "hotel"
+  }
+]

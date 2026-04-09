@@ -1,10 +1,12 @@
 package com.proyect;
 
 import java.nio.file.Path;
+import java.util.List;
 
 public interface Exportable {
     
-    void toCSV(Path ruta);
+    void toCSV(List<Viajes> lista);
 
-    void fromCSV(Path ruta);
+    List<Viajes> fromCSV();
+
 }
