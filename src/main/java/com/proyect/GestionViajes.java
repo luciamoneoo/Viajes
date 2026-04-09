@@ -5,10 +5,12 @@ import java.util.Scanner;
 public class GestionViajes {
 
     private GestorViajes gestor;
+    private ViajesGuardados guardado;
     private Scanner sc = new Scanner(System.in);
 
-    public GestionViajes(GestorViajes gestor) {
+    public GestionViajes(GestorViajes gestor, ViajesGuardados guardado) {
         this.gestor = gestor;
+        this.guardado = guardado;
         
     }
 
@@ -19,6 +21,7 @@ public class GestionViajes {
             System.out.println("1. Ver mis viajes");
             System.out.println("2. Añadir viaje");
             System.out.println("3. Eliminar viaje");
+            System.out.println("4. Guardar viajes");
             System.out.println("0. Salir");
 
             try {
@@ -34,7 +37,9 @@ public class GestionViajes {
                 añadirViaje();
             } else if (opcion == 3) {
                 eliminarViaje();
-            } else if (opcion != 0) {
+            }   else if (opcion == 4) {
+                guardarFichero();
+            }else if (opcion != 0) {
                 System.out.println("No existe esa opcion");
             }
         }
@@ -127,4 +132,18 @@ public class GestionViajes {
             }
         }
     }
+    private void guardarFichero() {
+    System.out.print("¿Guardar en CSV o JSON? (csv/json): ");
+    String opcion = sc.nextLine().trim().toLowerCase();
+
+    if (opcion.equals("csv")) {
+       guardado.toCSV(gestor.getListaViajes());  // <- le pasas la lista
+        System.out.println("Guardado en CSV");
+    } else if (opcion.equals("json")) {
+        guardado.toJSON(gestor.getListaViajes());
+        System.out.println("Guardado en JSON");
+    } else {
+        System.out.println("Opción no válida, pon csv o json");
+    }
+}
 }

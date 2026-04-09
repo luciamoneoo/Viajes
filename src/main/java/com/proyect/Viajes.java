@@ -65,4 +65,8 @@ public abstract class Viajes {
     return dias; 
     }
 
+    public int nPersonas() {
+    return nPersonas;
+    }
+
 }
