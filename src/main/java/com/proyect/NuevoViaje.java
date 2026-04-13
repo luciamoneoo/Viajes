@@ -1,3 +1,5 @@
+//interfaz gráfica con Swing, es decir para las ventanas, iguale que la clase Menu
+
 package com.proyect;
 
 import java.awt.GridLayout;
@@ -11,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class NuevoViaje extends JDialog {
+    //hereda de JDialog, que es la clase de Java Swing que representa una ventana de diálogo (modal) para crear un nuevo viaje
 
     private GestorViajes gestor;
 
@@ -21,9 +24,12 @@ public class NuevoViaje extends JDialog {
     private JTextField campoDias;
     private JTextField campoTransporte;
     private JTextField campoAlojamiento;
+    // combo para elegir el tipo de viaje (nacional o internacional)
     private JComboBox<String> comboTipo;
 
     public NuevoViaje(JFrame padre, GestorViajes gestor) {
+        // recibe el gestor y el padre (ventana que lo llama), configura el diálogo y lo rellena
+
         super(padre, "Nuevo viaje", true); // true = modal
         this.gestor = gestor;
 
@@ -33,6 +39,7 @@ public class NuevoViaje extends JDialog {
     }
 
     private void construirDialogo() {
+        // construimos todos los componentes visuales para colocarlos en el diálogo
         JPanel panel = new JPanel(new GridLayout(9, 2, 5, 5));
 
         campoNombre      = new JTextField();
@@ -74,7 +81,8 @@ public class NuevoViaje extends JDialog {
     }
 
     private void guardarViaje() {
-        // validaciones
+        // valida los datos introducidos, muestra mensajes de error si no son correctos
+        // si todo es correcto, crea el viaje y lo añade al gestor, mostrando un mensaje de confirmación con el ID del nuevo viaje
         String nombre = campoNombre.getText().trim();
         if (!nombre.matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}$")) {
             JOptionPane.showMessageDialog(this, "Nombre incorrecto, solo letras entre 3 y 40 caracteres");
@@ -82,12 +90,14 @@ public class NuevoViaje extends JDialog {
         }
 
         String destino = campoDestino.getText().trim();
+        // validamos que el destino solo tenga letras y espacios, entre 3 y 30 caracteres
         if (!destino.matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,30}$")) {
             JOptionPane.showMessageDialog(this, "Destino incorrecto, solo letras entre 3 y 30 caracteres");
             return;
         }
 
         int personas;
+        // validamos que el número de personas sea un entero entre 1 y 50
         try {
             personas = Integer.parseInt(campoPersonas.getText().trim());
             if (personas < 1 || personas > 50) throw new NumberFormatException();
@@ -97,6 +107,7 @@ public class NuevoViaje extends JDialog {
         }
 
         double precio;
+        // validamos que el precio sea un número decimal entre 0 y 10000, permitiendo tanto coma como punto para los decimales
         try {
             precio = Double.parseDouble(campoPrecio.getText().trim().replace(",", "."));
             if (precio < 0 || precio > 10000) throw new NumberFormatException();
@@ -106,6 +117,7 @@ public class NuevoViaje extends JDialog {
         }
 
         int dias;
+        // validamos que los días sea un entero entre 1 y 365
         try {
             dias = Integer.parseInt(campoDias.getText().trim());
             if (dias < 1 || dias > 365) throw new NumberFormatException();
@@ -115,12 +127,14 @@ public class NuevoViaje extends JDialog {
         }
 
         String transporte = campoTransporte.getText().trim();
+        // validamos que el transporte no esté vacío
         if (transporte.isEmpty()) {
             JOptionPane.showMessageDialog(this, "El transporte no puede estar vacío");
             return;
         }
 
         String alojamiento = campoAlojamiento.getText().trim();
+        // validamos que el alojamiento no esté vacío
         if (alojamiento.isEmpty()) {
             JOptionPane.showMessageDialog(this, "El alojamiento no puede estar vacío");
             return;
@@ -135,6 +149,7 @@ public class NuevoViaje extends JDialog {
         }
 
         gestor.añadirViaje(v);
+        // mostramos un mensaje de confirmación con el ID del nuevo viaje
         JOptionPane.showMessageDialog(this, "Viaje añadido con ID: " + v.getId());
         dispose(); // cerramos el dialogo
     }

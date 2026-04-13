@@ -6,6 +6,7 @@ public class ViajesInternacionales extends Viajes {
         super(nombre, nPersonas, destino, precio, dias, transporte, alojamiento);
     }
 
+    // en internacionales añadimos 200€ al precio base por el visado
     @Override
     public double calcularPrecio() {
         return precio + 200; // ponemos por ejemplo 200 euros por los visados  eso
